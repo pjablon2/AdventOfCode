@@ -38,6 +38,27 @@ unsigned int calculateMultiplyOfTwoEntriesThatSumIs2020(const std::list<unsigned
     return 0;
 }
 
+unsigned int calculateProductOfThreeEntriesThatSumIs2020(const std::list<unsigned int>& inputData)
+{
+    const unsigned int expectedSum = 2020;
+    for(auto firstOperand : inputData)
+    {
+        for(auto secondOperand : inputData)
+        {
+            for(auto thirdOperand : inputData)
+            {
+                if(firstOperand + secondOperand + thirdOperand == expectedSum)
+                {
+                    std::cout << "first:" << firstOperand <<" second:" << secondOperand << " thirdOperand:" << thirdOperand <<" multiply of three operands:" << firstOperand * secondOperand * thirdOperand << "\n";
+                    return firstOperand * secondOperand * thirdOperand;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+
 int main()
 {
   std::cout << "Advent Day1" << std::endl;
@@ -45,15 +66,18 @@ int main()
   try 
   {
       inputData = loadInput("/home/pjablons/work/advent/advent2020/day1/input/day1Input.txt");
-      //inputData = loadInput("/home/pjablons/work/advent/advent2020/day1/input/sampleInput1.txt");
+      //inputData = loadInput("/home/pjablons/work/advent/advent2020/day1/input/sampleInput1.txt"); //introduce unit tests
   }
   catch(const char* msg)
   {
       std::cerr << msg << "\n";
   }
 
-  const unsigned int multiply = calculateMultiplyOfTwoEntriesThatSumIs2020(inputData);
-  std::cout << "Day1 result is:" << multiply << "\n";
+  unsigned int multiply = calculateMultiplyOfTwoEntriesThatSumIs2020(inputData);
+  std::cout << "Day1 result of first task is:" << multiply << "\n";
+
+  multiply = calculateProductOfThreeEntriesThatSumIs2020(inputData);
+  std::cout << "Day1 result of second task is:" << multiply << "\n";
 
   return 0;
 }
