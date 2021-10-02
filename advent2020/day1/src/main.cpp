@@ -1,9 +1,11 @@
 #include<iostream>
 #include<string>
 #include<fstream>
+#include<list>
 
-void loadInput(const std::string& fileName)
+std::list<unsigned int> loadInput(const std::string& fileName)
 {
+    std::list<unsigned int> result;
     std::ifstream input(fileName, std::ios::in);
     if(!input.is_open())
     {
@@ -16,16 +18,19 @@ void loadInput(const std::string& fileName)
     std::string line;
     while(getline(input, line))
     {
-        std::cout << line << "\n";
+//        std::cout << std::stoi(line) << "\n";
+      result.emplace_back(std::stoi(line)); 
     }
 
     input.close();
+    return result;
 }
 
 
 int main()
 {
   std::cout << "Advent Day1" << std::endl;
-  loadInput("/home/pjablons/work/advent/advent2020/day1/input/day1Input.txt");
+
+  std::list<unsigned int> inputData = loadInput("/home/pjablons/work/advent/advent2020/day1/input/day1Input.txt");
   return 0;
 }
