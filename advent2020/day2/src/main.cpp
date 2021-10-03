@@ -5,6 +5,31 @@
 
 typedef std::list<std::string> InputsList;
 
+class PasswordValidator
+{
+public:
+    PasswordValidator(unsigned int lowerLimiter, unsigned int upperLimiter, char letter, const std::string& password)
+        : m_lowerLimiter(lowerLimiter), m_upperLimiter(upperLimiter), m_letter(letter), m_password(password) {}
+    bool isValid();
+
+private:
+    unsigned int m_lowerLimiter;
+    unsigned int m_upperLimiter;
+    char m_letter;
+    std::string m_password;
+
+    friend std::ostream& operator<<(std::ostream& os, PasswordValidator passValid)
+    {
+      std::cout << "m_lowerLimiter:" << passValid.m_lowerLimiter << " m_upperLimiter:" << passValid.m_upperLimiter << " m_letter:" << passValid.m_letter << " m_password:" << passValid.m_password << "\n"; 
+      return os;
+    }
+};
+
+bool PasswordValidator::isValid()
+{
+    return true;
+}
+
 std::list<std::string> loadInput(const std::string& fileName)
 {
     InputsList result;
@@ -46,6 +71,9 @@ int main()
   }
 
   getAllOperands(inputData);
+
+  const PasswordValidator firstPassword(1,3,'a',"abcde");
+  std::cout << firstPassword << "\n";
 
   return 0;
 }
