@@ -2,6 +2,7 @@
 #include<string>
 #include<fstream>
 #include<list>
+#include<algorithm>
 
 typedef std::list<std::string> InputsList;
 
@@ -10,7 +11,7 @@ class PasswordValidator
 public:
     PasswordValidator(unsigned int lowerLimiter, unsigned int upperLimiter, char letter, const std::string& password)
         : m_lowerLimiter(lowerLimiter), m_upperLimiter(upperLimiter), m_letter(letter), m_password(password) {}
-    bool isValid();
+    bool isValid() const;
 
 private:
     unsigned int m_lowerLimiter;
@@ -25,9 +26,10 @@ private:
     }
 };
 
-bool PasswordValidator::isValid()
+bool PasswordValidator::isValid() const
 {
-    return true;
+    const unsigned int count = std::count(m_password.begin(), m_password.end(), m_letter);
+    return count >= m_lowerLimiter && count <= m_upperLimiter;
 }
 
 std::list<std::string> loadInput(const std::string& fileName)
@@ -73,7 +75,16 @@ int main()
   getAllOperands(inputData);
 
   const PasswordValidator firstPassword(1,3,'a',"abcde");
-  std::cout << firstPassword << "\n";
+  std::cout << firstPassword;
+  std::cout << "isValid:" << firstPassword.isValid() << "\n";
+
+  const PasswordValidator secondPassword(1, 3, 'b', "cdefg");
+  std::cout << secondPassword;
+  std::cout << "isValid:" << secondPassword.isValid() << "\n";
+
+  const PasswordValidator thirdPassword(2, 9, 'c', "ccccccccc");
+  std::cout << thirdPassword;
+  std::cout << "isValid:" << thirdPassword.isValid() << "\n";
 
   return 0;
 }
