@@ -31,6 +31,7 @@ public:
       return *this;
     }
     bool isValid() const;
+    bool isCompilantToRestrictedPolicy() const;
 
 private:
     unsigned int m_lowerLimiter;
@@ -49,6 +50,21 @@ bool PasswordValidator::isValid() const
 {
     const unsigned int count = std::count(m_password.begin(), m_password.end(), m_letter);
     return count >= m_lowerLimiter && count <= m_upperLimiter;
+}
+
+bool PasswordValidator::isCompilantToRestrictedPolicy() const
+{
+    unsigned int fulfileConditions = 0;
+    if(m_password.at(m_lowerLimiter - 1) == m_letter)
+    {
+        ++fulfileConditions;
+    }
+    if(m_password.at(m_upperLimiter - 1) == m_letter)
+    {
+        ++fulfileConditions;
+    }
+    const unsigned int expectedFulfileConditions = 1;
+    return expectedFulfileConditions == fulfileConditions;
 }
 
 std::list<std::string> loadInput(const std::string& fileName)
@@ -93,7 +109,7 @@ void checkAllPasswords(InputsList& inputsList)
         std::string password;
         std::tie(lowerLimit, upperLimit, letter, password) = splitString(i);
         PasswordValidator passwordValidator(lowerLimit, upperLimit, letter, password);
-        if(passwordValidator.isValid())
+        if(passwordValidator.isCompilantToRestrictedPolicy())
         {
             std::cout << "Valid password:" << passwordValidator;
             ++numberOfValidPasswords;
