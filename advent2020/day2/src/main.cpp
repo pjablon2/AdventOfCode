@@ -4,6 +4,7 @@
 #include<list>
 #include<algorithm>
 #include<sstream>
+#include<tuple>
 
 typedef std::list<std::string> InputsList;
 
@@ -68,7 +69,7 @@ std::list<std::string> loadInput(const std::string& fileName)
     return result;
 }
 
-void splitString(const std::string& input)
+std::tuple<unsigned int, unsigned int, char, std::string> splitString(const std::string& input)
 {
     int low = 0;
     char limiter, comma, c;
@@ -78,32 +79,45 @@ void splitString(const std::string& input)
     ss << input;
     ss >> low >> limiter >> up >> c >> comma >> word;
     std::cout << "splitString:" << low << " " << limiter << " " << up << " " << c << " " << comma << " " << word << "\n";
+    return make_tuple(low, up, c, word);
 }
 
-void getAllOperands(InputsList& inputsList)
+void checkAllPasswords(InputsList& inputsList)
 {
+    unsigned int numberOfValidPasswords = 0;
     for(auto& i : inputsList)
     {
         std::cout << i << "\n";
-        splitString(i);
+        unsigned int lowerLimit, upperLimit;
+        char letter;
+        std::string password;
+        std::tie(lowerLimit, upperLimit, letter, password) = splitString(i);
+        PasswordValidator passwordValidator(lowerLimit, upperLimit, letter, password);
+        if(passwordValidator.isValid())
+        {
+            std::cout << "Valid password:" << passwordValidator;
+            ++numberOfValidPasswords;
+        }
+        std::cout << std::endl; 
     }
+    std::cout << "Number of valid passwords:" << numberOfValidPasswords << std::endl;
 }
 
 int main()
 {
   std::cout << "Advent Day2" << std::endl;
-  InputsList inputData;
+  InputsList rawPasswordData;
   try 
   {
-      //inputData = loadInput("/home/pjablons/work/advent/advent2020/day2/input/day2Input.txt");
-      inputData = loadInput("/home/pjablons/work/advent/advent2020/day2/input/sampleInput2.txt"); //introduce unit tests
+      rawPasswordData = loadInput("/home/pjablons/work/advent/advent2020/day2/input/day2Input.txt");
+      //rawPasswordData = loadInput("/home/pjablons/work/advent/advent2020/day2/input/sampleInput2.txt"); //introduce unit tests
   }
   catch(const char* msg)
   {
       std::cerr << msg << "\n";
   }
 
-  getAllOperands(inputData);
+  checkAllPasswords(rawPasswordData);
 
   /*const PasswordValidator secondPassword(1, 3, 'b', "cdefg");
   std::cout << secondPassword;
@@ -112,6 +126,5 @@ int main()
   const PasswordValidator thirdPassword(2, 9, 'c', "ccccccccc");
   std::cout << thirdPassword;
   std::cout << "isValid:" << thirdPassword.isValid() << "\n"; */
-
   return 0;
 }
