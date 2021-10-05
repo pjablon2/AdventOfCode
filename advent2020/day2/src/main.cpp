@@ -46,6 +46,8 @@ private:
     }
 };
 
+
+
 bool PasswordValidator::isValid() const
 {
     const unsigned int count = std::count(m_password.begin(), m_password.end(), m_letter);
