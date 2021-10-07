@@ -56,7 +56,7 @@ void Player::checkWhatEncountered(char& spot)
 
 void Player::makeNextStep(std::string& path)
 {
-    currentPositionX = (currentPositionX + 3) % path.size();
+    currentPositionX = (currentPositionX + 1) % path.size();
     checkWhatEncountered(path.at(currentPositionX));
 }
 
@@ -70,8 +70,8 @@ int main()
     std::list<std::string> inputData;
     try 
     {
-        //inputData = loadInput("/home/pjablons/work/advent/advent2020/day3/input/day3Input.txt");
-        inputData = loadInput("/home/pjablons/work/advent/advent2020/day3/input/sampleInput3.txt"); //introduce unit tests
+        inputData = loadInput("/home/pjablons/work/advent/advent2020/day3/input/day3Input.txt");
+        //inputData = loadInput("/home/pjablons/work/advent/advent2020/day3/input/sampleInput3.txt"); //introduce unit tests
     }
     catch(const char* msg)
     {
@@ -84,10 +84,16 @@ int main()
         std::cout << i << std::endl;
     }
     std::cout << std::endl;
+    int i = 0;
     player.checkStartingPoint(*inputData.begin());
+    ++i;
     for(auto it = std::next(inputData.begin()); it != inputData.end(); ++it)
     {
-        player.makeNextStep(*it);
+        if(i % 2 == 0)
+        {
+          player.makeNextStep(*it);
+        }
+        ++i;
     }
     std::cout << std::endl;
     for(auto& i : inputData)
@@ -97,3 +103,10 @@ int main()
     std::cout << "Player has reached to the target " << player;
     return 0;
 }
+/*
+Player2 has reached to the target and encountered: 299 trees
+Player3 has reached to the target and encountered: 67 trees
+Player4 has reached to the target and encountered: 71 trees
+Player5 has reached to the target and encountered: 35 trees
+ *
+ */
