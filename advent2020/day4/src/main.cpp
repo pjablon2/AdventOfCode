@@ -25,7 +25,15 @@ ListOfWord loadInput(const std::string& fileName)
 
 int main()
 {
-
+    auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/sampleInput4.txt");
+    for(auto& i : inputList)
+    {
+        if(i.length() == 0)
+        {
+           continue;
+        }
+        std::cout << i << std::endl;
+    }
     return 0;
 }
 
