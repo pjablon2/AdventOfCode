@@ -4,6 +4,25 @@
 #include<fstream>
 
 typedef std::list<std::string> ListOfWord;
+class Passport;
+typedef std::list<Passport> ListOfPassports;
+
+class Passport
+{
+public:
+    Passport(const std::string& rawData) : m_rawData(rawData) {}
+    Passport() {}
+
+private:
+    std::string m_rawData;
+
+    friend std::ostream& operator<<(std::ostream& os, const Passport& pass)
+    {
+        std::cout << pass.m_rawData;
+        return os;
+    }
+
+};
 
 ListOfWord loadInput(const std::string& fileName)
 {
@@ -23,17 +42,33 @@ ListOfWord loadInput(const std::string& fileName)
     return result;
 }
 
-int main()
+void fillListOfPassportsBasedOnInput(const ListOfWord& input, ListOfPassports& listOfPassports)
 {
-    auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/sampleInput4.txt");
-    for(auto& i : inputList)
+    std::string wholeData = "";
+    for(auto i : input)
     {
+        wholeData = wholeData + " " + i;
         if(i.length() == 0)
         {
+           listOfPassports.emplace_back(wholeData);
+           wholeData = "";
            continue;
         }
-        std::cout << i << std::endl;
     }
+    listOfPassports.emplace_back(wholeData);
+}
+
+int main()
+{
+    ListOfPassports listOfPassports;
+    auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/sampleInput4.txt");
+    fillListOfPassportsBasedOnInput(inputList, listOfPassports);
+
+    for(auto i : listOfPassports)
+    {
+       std::cout << i << std::endl;
+    }
+
     return 0;
 }
 
