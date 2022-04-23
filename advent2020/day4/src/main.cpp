@@ -34,7 +34,12 @@ public:
     }
     std::pair<std::string, std::string> splitString(const std::string& input)
     {
-        return {input, input};
+        std::string field, data;
+        char colon;
+        std::stringstream ss;
+        ss << input;
+        ss >> field >> colon >> data;
+        return {field, data};
     }
 private:
     std::string m_rawData;
