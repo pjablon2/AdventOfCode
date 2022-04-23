@@ -32,13 +32,14 @@ public:
         }
         return true;
     }
+
     std::pair<std::string, std::string> splitString(const std::string& input)
     {
-        std::string field, data;
-        char colon;
-        std::stringstream ss;
-        ss << input;
-        ss >> field >> colon >> data;
+        std::string data = input;
+        std::string delimiter = ":";
+        size_t pos = data.find(delimiter);
+        std::string field = data.substr(0, pos);
+        data.erase(0, pos + delimiter.length());
         return {field, data};
     }
 private:
@@ -117,6 +118,7 @@ int main()
     Passport newPassport("wks:1923 www:ssdv");
     std::cout << "IsValid:" << newPassport.isValid() << std::endl;
     std::cout << "Find: "<< newPassport.isAllRequiredDataAvaliable() << std::endl;
+    newPassport.splitString("wks:dupa");
 
     return 0;
 }
