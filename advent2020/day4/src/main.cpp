@@ -2,6 +2,10 @@
 #include<string>
 #include<list>
 #include<fstream>
+#include<unordered_map>
+#include<set>
+#include<sstream>
+#include<utility>
 
 typedef std::list<std::string> ListOfWord;
 class Passport;
@@ -12,9 +16,30 @@ class Passport
 public:
     Passport(const std::string& rawData) : m_rawData(rawData) {}
     Passport() {}
-
+    bool isValid() const
+    {
+        return true;
+    }
+    bool isAllRequiredDataAvaliable()
+    {
+        for(const auto& i : requiredFileldsInPassport)
+        {
+            auto search = passportData.find(i);
+            if(search == passportData.end())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    std::pair<std::string, std::string> splitString(const std::string& input)
+    {
+        return {input, input};
+    }
 private:
     std::string m_rawData;
+    std::unordered_map<std::string, std::string> passportData = {{"byr", "1984"}, {"iyr", "2017"}};
+    std::set<std::string> requiredFileldsInPassport = {"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"};
 
     friend std::ostream& operator<<(std::ostream& os, const Passport& pass)
     {
@@ -23,6 +48,17 @@ private:
     }
 
 };
+
+/*
+    byr (Birth Year)
+    iyr (Issue Year)
+    eyr (Expiration Year)
+    hgt (Height)
+    hcl (Hair Color)
+    ecl (Eye Color)
+    pid (Passport ID)
+    cid (Country ID)
+ */
 
 ListOfWord loadInput(const std::string& fileName)
 {
@@ -50,7 +86,11 @@ void fillListOfPassportsBasedOnInput(const ListOfWord& input, ListOfPassports& l
         wholeData = wholeData + " " + i;
         if(i.length() == 0)
         {
-           listOfPassports.emplace_back(wholeData);
+           const Passport passport(wholeData);
+           if(passport.isValid())
+           {
+               listOfPassports.emplace_back(wholeData);
+           }
            wholeData = "";
            continue;
         }
@@ -60,14 +100,18 @@ void fillListOfPassportsBasedOnInput(const ListOfWord& input, ListOfPassports& l
 
 int main()
 {
-    ListOfPassports listOfPassports;
-    auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/sampleInput4.txt");
-    fillListOfPassportsBasedOnInput(inputList, listOfPassports);
+   // ListOfPassports listOfPassports;
+   // auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/sampleInput4.txt");
+   // fillListOfPassportsBasedOnInput(inputList, listOfPassports);
 
-    for(auto i : listOfPassports)
-    {
-       std::cout << i << std::endl;
-    }
+   // for(auto i : listOfPassports)
+   // {
+   //    std::cout << i << std::endl;
+   // }
+
+    Passport newPassport("wks:1923 www:ssdv");
+    std::cout << "IsValid:" << newPassport.isValid() << std::endl;
+    std::cout << "Find: "<< newPassport.isAllRequiredDataAvaliable() << std::endl;
 
     return 0;
 }
