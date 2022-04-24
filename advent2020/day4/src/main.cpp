@@ -123,13 +123,16 @@ void fillListOfPassportsBasedOnInput(const ListOfWord& input, ListOfPassports& l
 int main()
 {
     ListOfPassports listOfPassports;
-    auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/sampleInput4.txt");
+    auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/day4Input.txt");
+    //auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/sampleInput4.txt");
     fillListOfPassportsBasedOnInput(inputList, listOfPassports);
 
     for(auto i : listOfPassports)
     {
        std::cout << i << std::endl;
     }
+
+    std::cout <<"Num of valid Passports: " << listOfPassports.size() << std::endl;
 
     return 0;
 }
