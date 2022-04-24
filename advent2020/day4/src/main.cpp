@@ -14,13 +14,19 @@ typedef std::list<Passport> ListOfPassports;
 class Passport
 {
 public:
-    Passport(const std::string& rawData) : m_rawData(rawData) {}
+    Passport(const std::string& rawData) : m_rawData(rawData)
+    {
+        splitRawData();
+    }
     Passport() {}
+
     bool isValid() const
     {
-        return true;
+        return isAllRequiredDataAvaliable();
     }
-    bool isAllRequiredDataAvaliable()
+
+private:
+    bool isAllRequiredDataAvaliable() const
     {
         for(const auto& i : requiredFileldsInPassport)
         {
@@ -33,6 +39,18 @@ public:
         return true;
     }
 
+    void splitRawData()
+    {
+        size_t pos = 0;
+        std::string delimiter = " ";
+        std::string chainToSplit = m_rawData;
+        while((pos = chainToSplit.find(delimiter)) != std::string::npos)
+        {
+           passportData.emplace(splitString(chainToSplit.substr(0, pos)));
+           chainToSplit.erase(0, pos + delimiter.length());
+        }
+    }
+
     std::pair<std::string, std::string> splitString(const std::string& input)
     {
         std::string data = input;
@@ -42,9 +60,8 @@ public:
         data.erase(0, pos + delimiter.length());
         return {field, data};
     }
-private:
     std::string m_rawData;
-    std::unordered_map<std::string, std::string> passportData = {{"byr", "1984"}, {"iyr", "2017"}};
+    std::unordered_map<std::string, std::string> passportData;
     std::set<std::string> requiredFileldsInPassport = {"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"};
 
     friend std::ostream& operator<<(std::ostream& os, const Passport& pass)
@@ -95,30 +112,24 @@ void fillListOfPassportsBasedOnInput(const ListOfWord& input, ListOfPassports& l
            const Passport passport(wholeData);
            if(passport.isValid())
            {
-               listOfPassports.emplace_back(wholeData);
+               listOfPassports.emplace_back(passport);
            }
            wholeData = "";
            continue;
         }
     }
-    listOfPassports.emplace_back(wholeData);
 }
 
 int main()
 {
-   // ListOfPassports listOfPassports;
-   // auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/sampleInput4.txt");
-   // fillListOfPassportsBasedOnInput(inputList, listOfPassports);
+    ListOfPassports listOfPassports;
+    auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/sampleInput4.txt");
+    fillListOfPassportsBasedOnInput(inputList, listOfPassports);
 
-   // for(auto i : listOfPassports)
-   // {
-   //    std::cout << i << std::endl;
-   // }
-
-    Passport newPassport("wks:1923 www:ssdv");
-    std::cout << "IsValid:" << newPassport.isValid() << std::endl;
-    std::cout << "Find: "<< newPassport.isAllRequiredDataAvaliable() << std::endl;
-    newPassport.splitString("wks:dupa");
+    for(auto i : listOfPassports)
+    {
+       std::cout << i << std::endl;
+    }
 
     return 0;
 }
