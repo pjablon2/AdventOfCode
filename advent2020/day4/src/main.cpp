@@ -7,6 +7,100 @@
 #include<sstream>
 #include<utility>
 
+namespace
+{
+/*
+    byr (Birth Year)
+    iyr (Issue Year)
+    eyr (Expiration Year)
+    hgt (Height)
+    hcl (Hair Color)
+    ecl (Eye Color)
+    pid (Passport ID)
+    cid (Country ID)
+ */
+bool checkBirthYear(const std::string& value)
+{
+    return true;
+}
+
+bool checkIssueYear(const std::string& value)
+{
+    return true;
+}
+
+bool checkExpirationYear(const std::string& value)
+{
+    return true;
+}
+
+bool checkHeight(const std::string& value)
+{
+    return true;
+}
+
+bool checkHairColor(const std::string& value)
+{
+    return true;
+}
+//amb blu brn gry grn hzl oth
+bool checkEyeColor(const std::string& value)
+{
+    return value == "amb" || value == "blu" || value == "brn" || value == "gry" || value == "grn" || value == "hzl" || value == "oth";
+}
+
+bool checkPassportId(const std::string& value)
+{
+    return true;
+}
+
+bool checkCountryId(const std::string&)
+{
+    return true;
+}
+
+bool isSingleFieldValid(const std::string& key, const std::string& value)
+{
+    if(key == "byr")
+    {
+        return checkBirthYear(value);
+    }
+    else if(key == "iyr")
+    {
+        return checkIssueYear(value);
+    }
+    else if(key == "eyr")
+    {
+        return checkExpirationYear(value);
+    }
+    else if(key == "hgt")
+    {
+        return checkHeight(value);
+    }
+    else if(key == "hcl")
+    {
+        return checkHairColor(value);
+    }
+    else if(key == "ecl")
+    {
+        return checkEyeColor(value);
+    }
+    else if(key == "pid")
+    {
+        return checkPassportId(value);
+    }
+    else if(key == "cid")
+    {
+        return checkCountryId(value);
+    }
+    return false;
+}
+
+}
+
+
+
+
 typedef std::list<std::string> ListOfWord;
 class Passport;
 typedef std::list<Passport> ListOfPassports;
@@ -72,16 +166,6 @@ private:
 
 };
 
-/*
-    byr (Birth Year)
-    iyr (Issue Year)
-    eyr (Expiration Year)
-    hgt (Height)
-    hcl (Hair Color)
-    ecl (Eye Color)
-    pid (Passport ID)
-    cid (Country ID)
- */
 
 ListOfWord loadInput(const std::string& fileName)
 {
@@ -122,18 +206,19 @@ void fillListOfPassportsBasedOnInput(const ListOfWord& input, ListOfPassports& l
 
 int main()
 {
-    ListOfPassports listOfPassports;
-    auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/day4Input.txt");
-    //auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/sampleInput4.txt");
-    fillListOfPassportsBasedOnInput(inputList, listOfPassports);
+   // ListOfPassports listOfPassports;
+   // auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/day4Input.txt");
+   // //auto inputList = loadInput("/home/pjablons/work/advent/advent2020/day4/input/sampleInput4.txt");
+   // fillListOfPassportsBasedOnInput(inputList, listOfPassports);
 
-    for(auto i : listOfPassports)
-    {
-       std::cout << i << std::endl;
-    }
+   // for(auto i : listOfPassports)
+   // {
+   //    std::cout << i << std::endl;
+   // }
 
-    std::cout <<"Num of valid Passports: " << listOfPassports.size() << std::endl;
+   // std::cout <<"Num of valid Passports: " << listOfPassports.size() << std::endl;
 
+    std::cout << "Is Valid Field:" << isSingleFieldValid("ecl","oth") << std::endl; 
     return 0;
 }
 
